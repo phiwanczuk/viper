@@ -85,6 +85,91 @@
     };
 
 
+    Waz.prototype.rysuj = function () {
+        for(var i = 0; i < this.segmenty.length; i++) {
+            this.segmenty[i].rysujKwadrat("Blue");
+        }
+    }
+
+
+    Waz.prototype.przesun = function () {
+        var glowa = this.segmenty[0];
+        var nowaGlowa;
+
+        this.kierunek = this.nastepnyKierunek;
+
+        if(this.kierunek === "prawa"){
+            nowaGlowa = new Blok(glowa.kolumna + 1, glowa.wiersz);
+        }else if(this.kierunek === "dol"){
+            nowaGlowa = new Blok(glowa.kolumna, glowa.wiersz + 1);
+        }else if(this.kierunek === "lewa"){
+            nowaGlowa = new Blok(glowa.kolumna - 1, glowa.wiersz);
+        }else if(this.kierunek === "gora"){
+            nowaGlowa = new Blok(glowa.kolumna, glowa.wiersz - 1);
+        }
+
+        if(this.wykryjKolizje(nowaGlowa)){
+            koniecGry();
+            return;
+        }
+
+        this.segmenty.unshift(nowaGlowa);
+
+        if(nowaGlowa.porownaj(jablko.pozycja)){
+            wynik ++;
+            jablko.przesun();
+        }else {
+            this.segmenty.pop();
+        }
+    };
+
+    Waz.prototype.wykryjKolizje = function (glowa) {
+        var lewaKolizja = (glowa.kolumna === 0);
+        var goraKolizja = (glowa.wiersz === 0);
+        var prawoKolizja = (glowa.kolumna === szerokoscWBlokach - 1);
+        var dolKolizja = (glowa.wiersz === wysokoscWWBlokach -1 );
+
+
+    var scianaKolizja = lewaKolizja || goraKolizja || prawoKolizja || dolKolizja;
+
+    var ogonKolizja = false;
+
+    for(var i = 0; i < this.segmenty.length; i++){
+        if(glowa.porownaj(this.segmenty[i])){
+            ogonKolizja = true;
+        }
+    }
+
+    return scianaKolizja || ogonKolizja;
+    };
+
+    var kierunki = {
+        37: "lewa",
+        38: "gora",
+        39: "prawa",
+        40: "dol"
+    };
+
+    $("body").keydown(function(event){
+        var nowyKierunek = kierunek[event.keyCode];
+        if(nowyKierunek !== undefined){
+            waz.ustawKierunek(nowyKierunek)
+        }
+    });
+
+    Waz.prototype.ustawKierunek = function (nowyKierunek) {
+        if(this.kierunek === "gora" && nowyKierunek === "dol"){
+            return;
+        } else if(this.kierunek === "prawa" && nowyKierunek === "lewa"){
+            return;
+        } else if(this.kierunek === "dol" && nowyKierunek === "gora"){
+            return;
+        } else if(this.kierunek === "lewa" && nowyKierunek === "prawa"){
+            return;
+        }
+        this.nastepnyKierunek = nowyKierunek;
+    }
+
 </script>
 </body>
 </html>
