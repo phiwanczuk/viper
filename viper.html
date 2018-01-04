@@ -10,6 +10,8 @@
 <body>
 <canvas id="plotno" width="400" height="400"></canvas>
 <script>
+
+
     var plotno = document.getElementById("plotno");
     var kontekst = plotno.getContext("2d");
     var szerokosc = plotno.width;
@@ -35,6 +37,15 @@
         kontekst.textAlign = "left";
         kontekst.textBaseline = "top";
         kontekst.fillText("Wynik: " + wynik, rozmiarBloku, rozmiarBloku);
+    };
+
+    var koniecGry = function(){
+        clearInterval(IdPrzedzialu);
+        kontekst.font = "60px Courier";
+        kontekst.fillStyle = "Black";
+        kontekst.textAlign = "center";
+        kontekst.textBaseline = "middle";
+        kontekst.fillText("Game over", szerokosc / 2, wysokosc / 2);
     };
 
 </script>
