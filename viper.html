@@ -48,6 +48,43 @@
         kontekst.fillText("Game over", szerokosc / 2, wysokosc / 2);
     };
 
+    var Blok = function(kolumna,wiersz) {
+        this.kolumna = kolumna;
+        this.wiersz = wiersz;
+    };
+
+    Blok.prototype.rysujKwadrat = function(kolor) {
+        var x = this.kolumna * rozmiarBloku;
+        var y = this.wiersz * rozmiarBloku;
+        kontekst.fillStyle = kolor;
+        kontekst.fillRect(x,y,rozmiarBloku,rozmiarBloku);
+    };
+
+    Blok.prototype.rysujOkrag = function (kolor) {
+        var srodekX = this.kolumna * rozmiarBloku + rozmiarBloku / 2;
+        var srodekY = this.wiersz * rozmiarBloku + rozmiarBloku / 2;
+        kontekst.fillStyle = kolor;
+        kontekst.fillRect(srodekX, srodekY, rozmiarBloku / 2, true);
+    };
+
+    Blok.prototype.porownaj = function (innyBlok) {
+        return this.kolumna === innyBlok && this.wiersz === innyBlok.wiersz;
+    };
+
+
+    var Waz = function() {
+        this.segmenty = [
+            new Blok(7, 5),
+            new Blok(6, 5),
+            new Blok(5, 5)
+        ];
+
+
+        this.kierunek = "prawa";
+        this.nastepnyKierunek = "prawa";
+    };
+
+
 </script>
 </body>
 </html>
